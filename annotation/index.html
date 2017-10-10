@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>A Classic</title>
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+<h1 id="title">A Classic</h1>
+
+<video src="https://www.cs.tufts.edu/comp/20/classic.mp4" id="a_classic" controls></video>
+<div id="lyrics"></div>
+
+<script type="text/javascript">	
+	// Complete this section and create a CSS file named style.css
+
+	var video = document.getElementById("a_classic");
+	var lyrics = document.getElementById("lyrics");
+
+	video.addEventListener("timeupdate", function() {
+
+		if (video.currentTime < 9) {
+			lyrics.innerHTML = "<h3>[music]</h3>";
+		}
+		else if (video.currentTime > 9 && video.currentTime < 13.5) {
+			lyrics.innerHTML = "<h3>Children have You ever met the Bogeyman before</h3>";
+		}
+		else if(video.currentTime > 13.5 && video.currentTime < 17.5) {
+			lyrics.innerHTML = "<h3>No, of course You haven't for You're much too good, I'm sure;</h3>";
+		}
+		else if(video.currentTime > 17.5 && video.currentTime < 21.3) {
+			lyrics.innerHTML = "<h3>Don't You be afraid of him if he should visit You,<h/3>";
+		}
+		else if(video.currentTime > 21.3 && video.currentTime < 25.2) {
+			lyrics.innerHTML = "<h3>He's a great big coward, so I'll tell You what to do<h/3>";
+		}
+		else if(video.currentTime > 25.2 && video.currentTime < 29.1) {
+			lyrics.innerHTML = "<h3>Hush, hush, hush, here comes the Bogeyman,<h/3>";
+		}
+		else if(video.currentTime > 29.1 && video.currentTime < 33.3) {
+			lyrics.innerHTML = "<h3>Don't let him come too close to You, he'll catch you if he can.</h3>";
+		}
+		else if(video.currentTime > 33.3 && video.currentTime < 37.2) {
+			lyrics.innerHTML = "<h3>Just pretend that you're a crocodile</h3>";
+		}
+		else if(video.currentTime > 37.2 && video.currentTime < 41.5) {
+			lyrics.innerHTML = "<h3>And you will find that Bogeyman will run away a mile.</h3>";
+		}
+		else if(video.currentTime > 41.5 && video.currentTime < 45.5) {
+			lyrics.innerHTML = "<h3>Say Shoo shoo and stick him with a pin</h3>";
+		}
+		else if(video.currentTime > 45.5 && video.currentTime < 49) {
+			lyrics.innerHTML = "<h3>Bogeyman will very nearly jump out of his skin</h3>";
+		}
+		else if(video.currentTime > 49 && video.currentTime < 52.3) {
+			lyrics.innerHTML = "<h3>Say buzz buzz just like the wasps that sting</h3>";
+		}
+		else if(video.currentTime >52.3 && video.currentTime < 56.9) {
+			lyrics.innerHTML = "<h3>Bogeyman will think you are an elephant with wings</h3>";
+		}
+		else if(video.currentTime > 57 && video.currentTime < 60.5) {
+			lyrics.innerHTML = "<h3>Hush, hush, hush, here comes the Bogeyman</h3>";
+		}
+		else if(video.currentTime > 60.5 && video.currentTime < 64.7) {
+			lyrics.innerHTML = "<h3>[music]</h3>";	
+		}
+		else if(video.currentTime > 64.7 && video.currentTime < 68.5) {
+			lyrics.innerHTML = "<h3>Tell him you've got soldiers in your bed</h3>";
+		}
+		else if(video.currentTime > 68.5 && video.currentTime < 72) {
+			lyrics.innerHTML = "<h3>For he will never guess that they are only made of lead</h3>"
+		}
+		else if(video.currentTime > 72 && video.currentTime < 80.5) {
+			lyrics.innerHTML = "<h3>[music]</h3>";
+		}
+		else if(video.currentTime > 80.5 && video.currentTime < 96) {
+			lyrics.innerHTML = "<h3>Say Hush hush, he'll think that you're asleep\
+								If you make a lovely snore away he'll softly creep\
+								Sing this tune you children one and all\
+								Bogeyman will run away, he'll think it's Henry Hall!</h3>";
+		}
+		else if(video.currentTime > 96 && video.currentTime < 111.4) {
+			lyrics.innerHTML = "<h3>When the shadows of the evening creep across the sky\
+								And your Mummy comes upstairs to sing a lullaby\
+								Tell her that the bogeyman no longer frightens you\
+								Uncle Henry's very kindly told you what to do</h3>";
+		}
+		else if(video.currentTime > 111.4 && video.currentTime < 126.4) {
+			lyrics.innerHTML = "<h3>Hush, hush, hush, here comes the Bogeyman\
+								Don't let him come too close to you, He'll catch you if he can.\
+								Just pretend your teddy bear's a dog\
+								Then shout out, 'Fetch him, Teddy!' and he'll hop off like a frog.</h3>";
+		}
+		else if(video.currentTime > 126.4 && video.currentTime < 135) {
+			lyrics.innerHTML = "<h3>[music]</h3>";
+		}
+		else if(video.currentTime > 135 && video.currentTime < 150) {
+			lyrics.innerHTML = "<h3>Say Meoow, pretend that you're a cat\
+								He'll think you may scratch him that make him fall down flat\
+								Just pretend he isn't really there\
+								You will find that Bogey man will vanish in thin air</h3>";
+		}
+		else if(video.currentTime > 150 && video.currentTime < 158.5) {
+			lyrics.innerHTML = "<h3>[music]</h3>";
+		}
+		else if(video.currentTime > 158.5 && video.currentTime < 168) {
+			lyrics.innerHTML = "<h3>Here's one way to catch him without fail\
+								Just keep a little salt with you\
+								and put it on his tail</h3>";
+		}
+		},false);
+</script>
+</body>
+</html>	

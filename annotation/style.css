@@ -1,0 +1,16 @@
+/* style.css */
+
+body {
+	text-align: center;
+	font: Helvetica, Arial, sans-serif;
+	background-color: #b3ecff;
+}
+div {
+	font: Helvetica, Arial, sans-serif;
+	color: black;
+}
+h3 {
+	font:Helvetica, Arial, sans-serif;
+	color: black;
+	font-size: 20px;
+}
