@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>Historical Landmarks</title>
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=geometry,sensor=true"></script>
+		<link rel="stylesheet" href="style.css" />
+		
+		<script>
+			var Lat = -99999;
+			var Long = -99999;
+			var req = new XMLHttpRequest();
+			var close_landmark_dist = 99999;
+			var close_landmark_name = 0;
+			var close_landmark_coords = [0,0];
+
+			function getLocation() {
+				if (navigator.geolocation) { 
+					navigator.geolocation.getCurrentPosition(function(position) {
+						var Lat = position.coords.latitude;
+						var Long = position.coords.longitude;
+						var userLocation = new google.maps.LatLng(Lat, Long);
+
+						var myOptions = {
+							zoom: 13, // The larger the zoom number, the bigger the zoom
+							center: userLocation,
+							mapTypeId: google.maps.MapTypeId.ROADMAP
+						};
+
+						var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+						var url = "https://defense-in-derpth.herokuapp.com/sendLocation";
+						var locat;
+						req.open("POST", url, true);
+						req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+						req.onreadystatechange = function() {
+							if (req.readyState == 4 && req.status == 200) {
+								var data = req.responseText;
+								locat = JSON.parse(data);
+
+								var peopleRay = locat.people;
+								var locationRay = locat["landmarks"];
+								
+								var pplCount = peopleRay.length;
+								var locCount = locationRay.length;
+								var pplImg = "dog_icon.png";
+								var landmarkImg = "rocket.png";
+								
+								for (var j=0; j < locCount; j++) {
+									var land_location = locationRay[j]["geometry"]["coordinates"];
+									var landmark_name = locationRay[j]["properties"]["Location_Name"];
+									var DetailsRay = locationRay[j]["properties"]["Details"];
+									var landmark_locat = new google.maps.LatLng(land_location[1],land_location[0]);
+
+									var distance =  google.maps.geometry.spherical.computeDistanceBetween(userLocation, landmark_locat);
+									if (distance < close_landmark_dist) {
+										close_landmark_dist = distance;
+										close_landmark_name = landmark_name;
+										close_landmark_dist = close_landmark_dist * 0.000621371;
+										close_landmark_coords = landmark_locat;
+									}
+
+									var location_marker = new google.maps.Marker({	
+										position: landmark_locat,
+										title: landmark_name,
+										content: DetailsRay,
+										icon: landmarkImg
+									});
+
+									location_marker.setMap(map);
+
+									var landmarkInfo = new google.maps.InfoWindow({
+										content: DetailsRay
+									});
+
+									google.maps.event.addListener(location_marker, 'click', function() {
+										landmarkInfo.setContent(this.content);
+										landmarkInfo.open(map, this);
+									});
+
+								}
+								
+								for (var i=0; i<pplCount; i++) {
+									var lati = peopleRay[i]["lat"];
+									var longi = peopleRay[i]["lng"];
+									var login = peopleRay[i]["login"];
+
+									var ppl_locat = new google.maps.LatLng(lati, longi);
+									
+									var distance =  google.maps.geometry.spherical.computeDistanceBetween(userLocation, ppl_locat);
+
+									distance = distance * 0.000621371;
+									var content = ("<b>Login: </b>" + login + "<BR> <b>Distance Away: </b>" + distance + " miles");
+									var people_marker = new google.maps.Marker({
+										position: ppl_locat,
+										content: content,
+										icon: pplImg
+									});
+
+									people_marker.setMap(map);
+									var person_info = new google.maps.InfoWindow();
+
+									google.maps.event.addListener(people_marker, 'click', function() {
+										person_info.setContent(this.content);
+										person_info.open(map, this);
+									});
+								}
+								var myContent = ("<b>Closest Historical Landmark: </b>" + close_landmark_name + "<BR><b>Distance Away: </b>" + close_landmark_dist);
+								var image = "rainbow_poop.png";
+								var marker = new google.maps.Marker({
+										position: userLocation,
+										content: myContent,
+										icon: image
+								});
+
+								var line_coordinates = [
+									close_landmark_coords,
+									userLocation
+								];
+								var polyline= new google.maps.Polyline({
+									path: line_coordinates,
+									geodesic: true,
+									strokeColor: '#ff7970',
+									strokeWeight: 5
+								});
+								polyline.setMap(map);
+								marker.setMap(map);
+
+								var infowindow = new google.maps.InfoWindow();
+
+								google.maps.event.addListener(marker, 'click', function() {
+									infowindow.setContent(marker.content);
+									infowindow.open(map, marker);
+								});
+							}
+						}
+						req.send("login=gm1G84dJ&lat=" + Lat+ "&lng="+Long); 
+					});
+				}
+				else {
+					alert("Geolocation is not supported by your web browser");
+				}
+
+			}
+
+		</script>	
+    </head>
+
+	<body onload = "getLocation()">	
+    	<div id="map_canvas"></div>
+    </body>
+
+</html>
+
+
