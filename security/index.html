@@ -3,24 +3,79 @@
 <html>
 
 <head>
-    <title>COMP20 Assignment 4</title>
+    <title>Assignment 4</title>
+    <link href="style.css" rel="stylesheet" />
 </head>
 
 <body>
     <h1>Assignment 4: Security and Privacy Assessment of Client-Side and Server-Side</h1>
-    
+    <h3>Linda Cameron</h3>
     <h2>Introduction</h2>
-    
-    <h2>Methodology</h2>
-    
-    <h2>Abstract of Findings</h2>
-    
-    <h2>Issues Found</h2>
-    
-    <h2>Conclusion</h2>
-    
-    <h2>References</h2>
+    <p>This assessment will test the security and vulnerability of the Historic Landmarks web application. The purpose of this application is to populate a map with historic landmarks based on the user's current location. </p>
 
+    <h2>Methodology</h2>
+   
+   	<p>To test this application, "black box" testing was first used, where hacks were done without looking at the source code. After this, the source code was looked at to find other potential security problems.</p>
+
+    <h2>Abstract of Findings</h2>
+    <p>There are a few major security issues present in this application.
+    	<ol>
+	    	<li>One can inject a login query to get all login information that is not theirs, as the application is trusting user input.</li>
+	    	<li>Someone could inject malicious info that could redirect application users to/prompt users to go to another site and their information can obtained by the wrong people.</li>
+	    	<li>The database can be overloaded with malicious/unneeded information that can cause the application to crash</li>
+    	</ol>
+    <p>
+
+    <h2>Issues Found</h2>
+    <ol>
+    	<b><li>Query Selector Injection</li></b>
+	    	<p><b>Location found: </b>/checkins.json </p>
+	    	<p><b>Severity of Issue:</b> High</p>
+	    	<p>In general, this is a very severe issue as much of data stored is personal to site users (credit card information, addresses, phone numbers, etc.), and if one can simply receive this information by getting information that is not equal to the parameter given, they could gain access to a great deal of sensitive information. </p>
+	    	
+	    	<p><b>How was it found?</b> When typing [$ne] after the login (login[$ne]=cameron), this would return the results of everything that is not equal to 'cameron' or whatever else is entered.</p>
+	    	<img src = "query_injection.png" alt= "query injection">
+
+	    	<p><b>Resolution: </b>One way to solve this problem is to cast the input values to a string so that the database information would be matched with '$ne: string', instead of everything that is not equal to string.</p>
+
+
+    	<b><li>Cross Site Scripting</li></b>
+    	
+	    	<p><b>Location found: </b>/sendLocation </p>
+
+	    	<p><b>Severity of Issue:</b> High</p>
+	    	<p>This issue is severe as someone who gain sensitive information from users can simnply enter a login that will prompt users to either go to another page (that could look identical to the source site) and enter their sensitive information, or they could automatically redirect users to another site without them noticing. There are two problems where a user is able to send malicious information and that it is stored in the database, and that malicious information is able to be passed back up from the database to the user.</p>
+
+	    	<p><b>How was it found? </b>When making either of these curl requests: <BR><img src = "xss.png" alt= "xss"><BR>and then going to the source page, the page will either be automatically redirected to buzzfeed.com or a prompt will show up for the user to go to buzzfeed.com since the script is read in as part of the code.</p>
+
+	    	<p><b>Proof</b><p>
+	    		<video width = 75% height = 75% preload controls src="xss_example.mov" type = "video/mov"></video>	    		
+
+	    	<p><b>Resolution: </b> To protect against cross-site scripting, one could first change the 5 significant characters in XML (<,>, ",',&) to &lt, &gt, &quote, #x27, and &amp. This will escape the html before inserting untrusted data into the document. Another way to protect against cross-site scripting would just be to not insert any data into the database except for in very specific and certain locations.</p>
+
+
+
+    	<b><li>Overflowing database</li></b>
+	    	<p><b>Location found: </b> /sendLocation </p>
+
+	    	<p><b>Severity of Issue:</b> Moderate</p>
+	    	<p> Assuming that most databases have much more memory available than this mongodb database, this should not be much of a problem (popular websites should expect to have many many many users). However, it is still very important that this is prevented as no database has unlimited storage. With a program like this where the database is quite small, it is extremely important that this be prevented as the server can crash due to too much information flooding the server.</p>
+
+	    	<p><b>How was it found?</b> When running this shell script: <BR><img src = "script_screenshot.png" alt = "shellscript screenshot"> <BR><BR>an unlimited number of curl requests were made to flood the server. In the terminal, there was an infinite return of data <BR><img src = "fillingdatabase.png" alt = "infinite terminal return"> <BR><BR> and when going to the checkins page it can be seen that there is an awful lot of data on the server. <BR><img src = "flood_checkins.png" alt = "checkins flooded"> </p>
+
+	    	<p><b>Resolution: </b> One could block users from entering more than one input of information to stop this issue</p>
+
+	</ol>
+    <h2>Conclusion</h2>
+    	<p>If Historical Landmarks were to be pushed the general public now, many of the security issues present would prevent it from being successful. The resolutions suggested here will be extremely beneficial to the success of this appplication, and will prevent hackers from gaining sensitive information from users.</p>
+
+    <h2>References</h2> 
+    	<ol>
+    		<li>https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet</li>
+    		<li>https://help.ubuntu.com/community/FilePermissions</li>
+    		<li>https://tuftsdev.github.io/WebProgramming/notes/web_security.html</li>
+    		<li>https://www.synopsys.com/blogs/software-security/preventing-common-mean-stack-vulnerabilities/</li>
+    	</ol>
 </body>
         
 </html>
